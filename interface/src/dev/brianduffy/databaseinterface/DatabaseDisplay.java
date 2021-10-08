@@ -14,12 +14,19 @@ public class DatabaseDisplay extends JFrame {
         artistSet = new HashSet<>();
         trackSet = new HashSet<>();
 
+        // TODO: Test data, remove
         artistSet.add(new Artist("Brian"));
         artistSet.add(new Artist("Brian"));
         artistSet.add(new Artist("Brian"));
         artistSet.add(new Artist("Connor"));
         artistSet.add(new Artist("Ben"));
         artistSet.add(new Artist("Steve"));
+
+        trackSet.add(new Track(2000, "Hello", new Artist("Brian")));
+        trackSet.add(new Track(2300, "World", new Artist("Nope")));
+        trackSet.add(new Track(4696, "Lalala", new Artist("Artist")));
+        trackSet.add(new Track(69420, "Placeholder", new Artist("Blah")));
+        trackSet.add(new Track(-1, "Testing", new Artist("Sarah")));
 
         changeView(new MainMenuDisplay(this));
 
