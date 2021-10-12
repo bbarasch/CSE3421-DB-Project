@@ -1,4 +1,4 @@
-package dev.brianduffy.databaseinterface;
+package group1.cse3241.databaseinterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class MainMenuDisplay extends JPanel implements ActionListener {
         } else if (e.getSource().equals(addRecords)) {
             display.changeView(new AddDisplay(display));
         } else if (e.getSource().equals(orderItems)) {
-            System.out.println("Got Order Button");
+            display.changeView(new OrderDisplay(display));
         } else if (e.getSource().equals(editRecords)) {
             System.out.println("Got Edit Button");
         } else if (e.getSource().equals(reports)) {

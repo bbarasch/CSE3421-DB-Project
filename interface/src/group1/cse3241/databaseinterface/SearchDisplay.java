@@ -1,11 +1,13 @@
-package dev.brianduffy.databaseinterface;
+package group1.cse3241.databaseinterface;
+
+import group1.cse3241.databaseinterface.schema.ContentCreator;
+import group1.cse3241.databaseinterface.schema.Track;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
-import java.util.function.Predicate;
+import java.util.Map;
 
 public class SearchDisplay extends JPanel implements ActionListener {
     private final JButton artist, tracks, menu;
@@ -61,9 +63,9 @@ public class SearchDisplay extends JPanel implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String term = entry.getText();
-            Set<Artist> artistSet = display.getArtistSet();
-            Object[] results = artistSet.stream().filter(artist ->
-                    artist.getName().equalsIgnoreCase(term)).toArray();
+            Map<String, ContentCreator> artistMap = display.getArtistMap();
+            Object[] results = artistMap.entrySet().stream().filter(artist ->
+                    artist.getKey().equalsIgnoreCase(term)).toArray();
             display.changeView(new SearchResults(display, results));
         }
     }
@@ -89,9 +91,9 @@ public class SearchDisplay extends JPanel implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String term = entry.getText();
-            Set<Track> trackSet = display.getTrackSet();
-            Object[] results = trackSet.stream().filter(track ->
-                    track.getTrackName().equalsIgnoreCase(term)).toArray();
+            Map<String, Track> trackMap = display.getTrackMap();
+            Object[] results = trackMap.entrySet().stream().filter(track ->
+                    track.getKey().equalsIgnoreCase(term)).toArray();
             display.changeView(new SearchResults(display, results));
         }
     }

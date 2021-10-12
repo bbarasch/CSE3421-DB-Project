@@ -1,4 +1,4 @@
-package dev.brianduffy.databaseinterface;
+package group1.cse3241.databaseinterface;
 
 import javax.swing.*;
 import java.awt.*;
