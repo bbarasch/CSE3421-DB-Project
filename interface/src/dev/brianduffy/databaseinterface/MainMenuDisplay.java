@@ -38,7 +38,7 @@ public class MainMenuDisplay extends JPanel implements ActionListener {
         if (e.getSource().equals(search)) {
             display.changeView(new SearchDisplay(display));
         } else if (e.getSource().equals(addRecords)) {
-            System.out.println("Got Add Button");
+            display.changeView(new AddDisplay(display));
         } else if (e.getSource().equals(orderItems)) {
             System.out.println("Got Order Button");
         } else if (e.getSource().equals(editRecords)) {
