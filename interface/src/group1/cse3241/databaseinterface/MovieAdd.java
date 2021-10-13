@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MovieAdd extends JPanel implements ActionListener {
+    private final JButton back;
     private final JTextField title, content_rating, length, year, movie_genre, movie_definition;
     private final JComboBox<String> creator_name;
     private final JList<String> starring;
@@ -15,7 +16,7 @@ public class MovieAdd extends JPanel implements ActionListener {
     private final DatabaseDisplay display;
 
     public MovieAdd(DatabaseDisplay display) {
-        setLayout(new GridLayout(10, 2));
+        setLayout(new GridLayout(11, 2));
 
         this.display = display;
 
@@ -61,10 +62,18 @@ public class MovieAdd extends JPanel implements ActionListener {
         JButton submit = new JButton("Add Movie");
         submit.addActionListener(this);
         add(submit);
+
+        back = new JButton("Back");
+        back.addActionListener(this);
+        add(back);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(back)) {
+            display.changeView(new MainMenuDisplay(display));
+            return;
+        }
         int year; // = this.year.getText();
         try {
             year = Integer.parseInt(this.year.getText());

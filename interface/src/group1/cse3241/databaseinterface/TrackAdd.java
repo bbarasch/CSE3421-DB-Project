@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TrackAdd extends JPanel implements ActionListener {
-    private final JLabel warningMessage;
+    private final JButton back;
     private final JTextField trackEntry, lengthEntry;
     private final JComboBox<String> albumEntry;
     private final DatabaseDisplay display;
@@ -17,10 +17,6 @@ public class TrackAdd extends JPanel implements ActionListener {
         setLayout(new GridLayout(8, 1));
 
         this.display = display;
-
-        warningMessage = new JLabel("");
-        warningMessage.setForeground(Color.RED);
-        add(warningMessage);
 
         add(new JLabel("Track Name:"));
         trackEntry = new PlaceholderTextField("Track Name");
@@ -38,10 +34,18 @@ public class TrackAdd extends JPanel implements ActionListener {
         JButton addButton = new JButton("Add Track");
         addButton.addActionListener(this);
         add(addButton);
+
+        back = new JButton("Back");
+        back.addActionListener(this);
+        add(back);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(back)) {
+            display.changeView(new MainMenuDisplay(display));
+            return;
+        }
         String length = lengthEntry.getText();
         String title = trackEntry.getText();
         String album = (String) albumEntry.getSelectedItem();

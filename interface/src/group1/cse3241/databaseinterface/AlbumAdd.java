@@ -8,19 +8,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AlbumAdd extends JPanel implements ActionListener {
+    private final JButton back;
     private final JTextField title, content_rating, length, year, record_label, music_genre;
     private final JComboBox<String> creator_name;
     private final JLabel warningMessage;
     private final DatabaseDisplay display;
 
     public AlbumAdd(DatabaseDisplay display) {
-        setLayout(new GridLayout(16, 1));
+        setLayout(new GridLayout(9, 2));
 
         this.display = display;
 
         warningMessage = new JLabel("");
         warningMessage.setForeground(Color.RED);
         add(warningMessage);
+
+        // Padding
+        add(new JLabel());
 
         add(new JLabel("Album Title:"));
         title = new PlaceholderTextField("Album Title");
@@ -54,10 +58,18 @@ public class AlbumAdd extends JPanel implements ActionListener {
         JButton submit = new JButton("Add Album");
         submit.addActionListener(this);
         add(submit);
+
+        back = new JButton("Back");
+        back.addActionListener(this);
+        add(back);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(back)) {
+            display.changeView(new MainMenuDisplay(display));
+            return;
+        }
         int year; // = this.year.getText();
         try {
             year = Integer.parseInt(this.year.getText());

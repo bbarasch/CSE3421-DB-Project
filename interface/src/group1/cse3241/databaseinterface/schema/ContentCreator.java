@@ -6,10 +6,10 @@ import java.util.UUID;
 
 public class ContentCreator {
     private final UUID uuid;
-    private final ArtistType types[];
+    private final ArtistType[] types;
     private final String name;
 
-    public ContentCreator(String name, ArtistType types[]) {
+    public ContentCreator(String name, ArtistType[] types) {
         this.name = name;
         this.types = types;
         uuid = UUID.randomUUID();

@@ -14,11 +14,11 @@ public class OrderDisplay extends JPanel implements ActionListener {
     private final JLabel warningMessage;
     private final JTextField priceEntry, dateEntry, orderEntry, copyEntry;
     private final JComboBox<String> titleEntry;
-    private final JButton submit;
+    private final JButton submit, back;
     private final DatabaseDisplay display;
 
     public OrderDisplay(DatabaseDisplay display) {
-        setLayout(new GridLayout(12, 1));
+        setLayout(new GridLayout(13, 1));
 
         warningMessage = new JLabel("");
         warningMessage.setForeground(Color.RED);
@@ -50,10 +50,18 @@ public class OrderDisplay extends JPanel implements ActionListener {
         add(submit);
 
         this.display = display;
+
+        back = new JButton("Back");
+        back.addActionListener(this);
+        add(back);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(back)) {
+            display.changeView(new MainMenuDisplay(display));
+            return;
+        }
         String price = priceEntry.getText();
         String date = dateEntry.getText();
         String title = (String) titleEntry.getSelectedItem();
