@@ -1,5 +1,6 @@
 package group1.cse3241.databaseinterface.schema;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +17,11 @@ public class ContentCreator {
 
     @Override
     public String toString() {
-        return name + " (" + uuid + ")";
+        return "ContentCreator{" +
+                "uuid=" + uuid +
+                ", types=" + Arrays.toString(types) +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public String getName() {

@@ -1,30 +1,34 @@
 package group1.cse3241.databaseinterface;
 
-import group1.cse3241.databaseinterface.schema.Album;
-import group1.cse3241.databaseinterface.schema.ContentCreator;
-import group1.cse3241.databaseinterface.schema.Track;
+import group1.cse3241.databaseinterface.schema.*;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseDisplay extends JFrame {
-    private final Map<String, ContentCreator> artistMap;
+    private final Map<String, ContentCreator> creatorMap;
     private final Map<String, Album> albumMap;
     private final Map<String, Track> trackMap;
+    private final Map<Integer, Order> orderMap;
+    private final Map<String, Movie> movieMap;
+    private final Map<Integer, Copy> copyMap;
 
     public DatabaseDisplay() {
         super("Database Interface");
 
-        artistMap = new HashMap<>();
+        creatorMap = new HashMap<>();
         albumMap = new HashMap<>();
         trackMap = new HashMap<>();
+        orderMap = new HashMap<>();
+        movieMap = new HashMap<>();
+        copyMap = new HashMap<>();
 
         // TODO: Test data, remove
-        artistMap.put("Brian", new ContentCreator("Brian", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
-        artistMap.put("Connor", new ContentCreator("Connor", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
-        artistMap.put("Ben", new ContentCreator("Ben", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
-        artistMap.put("Steve", new ContentCreator("Steve", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
+        creatorMap.put("Brian", new ContentCreator("Brian", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
+        creatorMap.put("Connor", new ContentCreator("Connor", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
+        creatorMap.put("Ben", new ContentCreator("Ben", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
+        creatorMap.put("Steve", new ContentCreator("Steve", new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR}));
 
         trackMap.put("Hello", new Track("Hello", "1h", "Album1"));
         trackMap.put("World", new Track("World", "1h5m", "Album2"));
@@ -47,8 +51,8 @@ public class DatabaseDisplay extends JFrame {
         repaint();
     }
 
-    public Map<String, ContentCreator> getArtistMap() {
-        return artistMap;
+    public Map<String, ContentCreator> getCreatorMap() {
+        return creatorMap;
     }
 
     public Map<String, Album> getAlbumMap() {
@@ -57,5 +61,17 @@ public class DatabaseDisplay extends JFrame {
 
     public Map<String, Track> getTrackMap() {
         return trackMap;
+    }
+
+    public Map<Integer, Order> getOrderMap() {
+        return orderMap;
+    }
+
+    public Map<String, Movie> getMovieMap() {
+        return movieMap;
+    }
+
+    public Map<Integer, Copy> getCopyMap() {
+        return copyMap;
     }
 }

@@ -63,7 +63,7 @@ public class SearchDisplay extends JPanel implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String term = entry.getText();
-            Map<String, ContentCreator> artistMap = display.getArtistMap();
+            Map<String, ContentCreator> artistMap = display.getCreatorMap();
             Object[] results = artistMap.entrySet().stream().filter(artist ->
                     artist.getKey().equalsIgnoreCase(term)).toArray();
             display.changeView(new SearchResults(display, results));
