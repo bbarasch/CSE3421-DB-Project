@@ -47,7 +47,7 @@ public class ReportsDisplay extends JPanel implements ActionListener {
         } else if (e.getSource().equals(popActor)) {
             display.changeView(new PopActorDisplay(display));
         } else if (e.getSource().equals(popArtist)) {
-            display.changeView(new EditDisplay(display));
+            display.changeView(new PopArtistDisplay(display));
         } else if (e.getSource().equals(moviesChecked)) {
             display.changeView(new ReportsDisplay(display));
         } else if (e.getSource().equals(back)) {
