@@ -8,7 +8,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 public class Main {
+	//connection object
+	public static Connection conn = null;
 	// database name
 	private static String DATABASE = "Library.db";
 	
@@ -53,7 +58,9 @@ public class Main {
      * This query is written with the Statement class, typically 
      * used for static SQL SELECT statements
      */
-    public static void sqlQuery(Connection conn, String sql){
+    public static JTable sqlQuery(Connection conn, String sql){
+    	DefaultTableModel tableModel = new DefaultTableModel();
+    	JTable table = new JTable(tableModel);
         try {
         	Statement stmt = conn.createStatement();
         	ResultSet rs = stmt.executeQuery(sql);
@@ -61,26 +68,31 @@ public class Main {
         	int columnCount = rsmd.getColumnCount();
         	for (int i = 1; i <= columnCount; i++) {
         		String value = rsmd.getColumnName(i);
+        		tableModel.addColumn(value);
         		System.out.print(value);
         		if (i < columnCount) System.out.print(",  ");
         	}
 			System.out.print("\n");
         	while (rs.next()) {
+        		String[] row = new String[columnCount];
         		for (int i = 1; i <= columnCount; i++) {
         			String columnValue = rs.getString(i);
+        			row[i-1] = columnValue;
             		System.out.print(columnValue);
             		if (i < columnCount) System.out.print(",  ");
         		}
+        		tableModel.addRow(row);
     			System.out.print("\n");
         	}
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return table;
     }
     
     public static void main(String[] args) {
     	System.out.println("Establishing connection...");
-    	Connection conn = initializeDB(DATABASE);
+    	conn = initializeDB(DATABASE);
     	
         new DatabaseDisplay();
     }
