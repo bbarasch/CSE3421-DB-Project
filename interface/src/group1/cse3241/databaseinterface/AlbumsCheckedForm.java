@@ -7,25 +7,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-public class ArtistYearForm extends JPanel implements ActionListener {
+public class AlbumsCheckedForm extends JPanel implements ActionListener {
 	private final JButton submit, back;
-	private final PlaceholderTextField artist, year;
+	private final PlaceholderTextField email;
     private final DatabaseDisplay display;
     
-	public ArtistYearForm(DatabaseDisplay display) {
-        super(new GridLayout(6, 1));
+    public AlbumsCheckedForm(DatabaseDisplay display) {
+    	super(new GridLayout(4, 1));
         this.display = display;
         
-        JLabel artistLabel = new JLabel("Enter name of artist:");
-        artist = new PlaceholderTextField("Artist Name");
-        JLabel yearLabel = new JLabel("Enter year:");
-        year = new PlaceholderTextField("Year");
-        add(artistLabel);
-        add(artist);
-        add(yearLabel);
-        add(year);
+        JLabel PatronLabel = new JLabel("Enter Email of patron:");
+        email = new PlaceholderTextField("Email");
+        add(PatronLabel);
+        add(email);
         
         submit = new JButton("Submit");
         submit.addActionListener(this);
@@ -34,14 +29,14 @@ public class ArtistYearForm extends JPanel implements ActionListener {
         back = new JButton("Back");
         back.addActionListener(this);
         add(back);
-	}
+    }
+    
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(submit)) {
-			String artistName = artist.getText();
-			int yearNum = Integer.parseInt(year.getText());
-			System.out.println(artistName + " " + yearNum);
-            display.changeView(new TrackBeforeYear(display, artistName, yearNum));
+			String emailAddress = email.getText();
+			System.out.println(emailAddress);
+            display.changeView(new AlbumsCheckedDisplay(display, emailAddress));
         } else if (e.getSource().equals(back)) {
             display.changeView(new ReportsDisplay(display));
         }

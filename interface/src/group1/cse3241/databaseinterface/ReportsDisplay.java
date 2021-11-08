@@ -43,7 +43,7 @@ public class ReportsDisplay extends JPanel implements ActionListener {
     	if (e.getSource().equals(beforeYear)) {
             display.changeView(new ArtistYearForm(display));
         } else if (e.getSource().equals(albumsChecked)) {
-            display.changeView(new AddDisplay(display));
+            display.changeView(new AlbumsCheckedForm(display));
         } else if (e.getSource().equals(popActor)) {
             display.changeView(new OrderDisplay(display));
         } else if (e.getSource().equals(popArtist)) {
