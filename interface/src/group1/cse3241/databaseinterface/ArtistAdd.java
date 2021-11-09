@@ -9,10 +9,9 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 public class ArtistAdd extends JPanel implements ActionListener {
-    private final JButton back;
+    private final JButton back, search;
     private final JTextField entry;
     private final DatabaseDisplay display;
-    private String oldName = "";
 
     public ArtistAdd(DatabaseDisplay display, ContentCreator artist) {
         setLayout(new GridLayout(4, 1));
@@ -21,13 +20,9 @@ public class ArtistAdd extends JPanel implements ActionListener {
 
         add(new JLabel("Artist Name:"));
         entry = new PlaceholderTextField("Artist Name");
-        if (artist != null) {
-            entry.setText(artist.getName());
-            oldName = artist.getName();
-        }
         add(entry);
 
-        JButton search = new JButton("Add artist");
+        search = new JButton("Add artist");
         search.addActionListener(this);
         add(search);
 
@@ -46,14 +41,18 @@ public class ArtistAdd extends JPanel implements ActionListener {
         if (e.getSource().equals(back)) {
             display.changeView(new MainMenuDisplay(display));
             return;
+        } else if (e.getSource().equals(search)) {
+        	String name = entry.getText();
+        	String checkDatabase = "SELECT CONTENT_CREATOR.Name FROM CONTENT_CREATOR WHERE CONTENT_CREATOR.Name = \"" + name + "\";";
+        	JTable result = Main.sqlQuery(Main.conn, checkDatabase);
+        	System.out.println(result.getRowCount());
+        	if (result.getRowCount() == 0) {
+        		String addArtist = "INSERT INTO CONTENT_CREATOR (Name) VALUES(\"" + name + "\")";
+        		String addType = "INSERT INTO CREATOR_TYPE (Type, Creator_name) VALUES(\"Musician\", \""+ name + "\")";
+        		Main.sqlQuery(Main.conn, addArtist);
+        		Main.sqlQuery(Main.conn, addType);
+        	}
+        	display.changeView(new MainMenuDisplay(display));
         }
-        String name = entry.getText();
-        ContentCreator artist = new ContentCreator(name, new ContentCreator.ArtistType[]{ContentCreator.ArtistType.AUTHOR});
-        Map<String, ContentCreator> map = display.getCreatorMap();
-        if (oldName.length() != 0) {
-            map.remove(oldName);
-        }
-        map.put(name, artist);
-        display.changeView(new MainMenuDisplay(display));
     }
 }
