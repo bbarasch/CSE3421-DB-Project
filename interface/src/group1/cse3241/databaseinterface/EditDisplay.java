@@ -16,10 +16,16 @@ public class EditDisplay extends JPanel implements ActionListener {
         super(new GridLayout(4, 1));
 
         this.display = display;
-
+        String getArtists = "SELECT CREATOR_TYPE.Creator_name FROM CREATOR_TYPE WHERE CREATOR_TYPE.Type = \"Musician\";";
+        JTable artistTable = Main.sqlQuery(Main.conn, getArtists);
+        int row = artistTable.getRowCount();
+        String[] artistArr = new String[row];
+        for(int i = 0; i < row; i++) {
+        	artistArr[i] = artistTable.getValueAt(i, 0).toString();
+        }
+        System.out.println(artistArr.toString());
         add(new JLabel("Artist to Edit:"));
-        String[] artists = display.getCreatorMap().keySet().toArray(new String[0]);
-        artistEntry = new JComboBox<>(artists);
+        artistEntry = new JComboBox<>(artistArr);
         add(artistEntry);
 
         submit = new JButton("Edit");
@@ -35,8 +41,7 @@ public class EditDisplay extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(submit)) {
             String artistName = (String) artistEntry.getSelectedItem();
-            ContentCreator artist = display.getCreatorMap().get(artistName);
-            display.changeView(new ArtistAdd(display, artist));
+            display.changeView(new EditArtistDisplay(display, artistName));
         } else if (e.getSource().equals(back)) {
             display.changeView(new MainMenuDisplay(display));
         }
