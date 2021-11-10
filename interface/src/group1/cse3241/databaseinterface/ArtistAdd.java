@@ -6,20 +6,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 public class ArtistAdd extends JPanel implements ActionListener {
     private final JButton back, search;
     private final JTextField entry;
     private final DatabaseDisplay display;
 
-    public ArtistAdd(DatabaseDisplay display, ContentCreator artist) {
+    public ArtistAdd(DatabaseDisplay display) {
+        this(display, "");
+    }
+
+    public ArtistAdd(DatabaseDisplay display, String name) {
         setLayout(new GridLayout(4, 1));
 
         this.display = display;
 
         add(new JLabel("Artist Name:"));
         entry = new PlaceholderTextField("Artist Name");
+        entry.setText(name);
         add(entry);
 
         search = new JButton("Add artist");
@@ -31,16 +35,10 @@ public class ArtistAdd extends JPanel implements ActionListener {
         add(back);
     }
 
-    public ArtistAdd(DatabaseDisplay display) {
-        this(display, null);
-    }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(back)) {
             display.changeView(new MainMenuDisplay(display));
-            return;
         } else if (e.getSource().equals(search)) {
         	String name = entry.getText();
         	String checkDatabase = "SELECT CONTENT_CREATOR.Name FROM CONTENT_CREATOR WHERE CONTENT_CREATOR.Name = \"" + name + "\";";

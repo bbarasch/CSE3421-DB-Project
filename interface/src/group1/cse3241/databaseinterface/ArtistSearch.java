@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ArtistSearch extends JPanel implements ActionListener {
     private final JButton back;
@@ -38,9 +39,10 @@ public class ArtistSearch extends JPanel implements ActionListener {
             return;
         }
         String term = entry.getText();
-        Map<String, ContentCreator> artistMap = display.getCreatorMap();
-        Object[] results = artistMap.entrySet().stream().filter(artist ->
-                artist.getKey().equalsIgnoreCase(term)).toArray();
-        display.changeView(new SearchResults(display, results));
+        String sqlStat = "SELECT C.Name, T.Type FROM CONTENT_CREATOR as C, CREATOR_TYPE as T"
+                            + " WHERE T.Creator_name = C.Name"
+                            + " AND C.Name = '" + term + "';";
+        JTable result = Main.sqlQuery(Main.conn, sqlStat);
+        display.changeView(new SearchResults(display, result));
     }
 }

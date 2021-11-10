@@ -1,9 +1,5 @@
 package group1.cse3241.databaseinterface;
 
-import group1.cse3241.databaseinterface.schema.Copy;
-import group1.cse3241.databaseinterface.schema.Media;
-import group1.cse3241.databaseinterface.schema.Order;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,8 +37,13 @@ public class OrderDisplay extends JPanel implements ActionListener {
         add(copyEntry);
 
         add(new JLabel("Movie Title:"));
-        String[] creators = display.getMovieMap().keySet().toArray(new String[0]);
-        titleEntry = new JComboBox<>(creators);
+        String sqlQuery = "SELECT Title FROM MOVIE;";
+        JTable table = Main.sqlQuery(Main.conn, sqlQuery);
+        String[] movies = new String[table.getRowCount()];
+        for (int i = 0; i < table.getRowCount(); i++) {
+            movies[i] = (String) table.getValueAt(i, 0);
+        }
+        titleEntry = new JComboBox<>(movies);
         add(titleEntry);
 
         submit = new JButton("Add Order");
@@ -62,11 +63,12 @@ public class OrderDisplay extends JPanel implements ActionListener {
             display.changeView(new MainMenuDisplay(display));
             return;
         }
-        String price = priceEntry.getText();
+        double price;
         String date = dateEntry.getText();
         String title = (String) titleEntry.getSelectedItem();
         int order_number, num_copies;
         try {
+            price = Double.parseDouble(priceEntry.getText());
             order_number = Integer.parseInt(orderEntry.getText());
             num_copies = Integer.parseInt(copyEntry.getText());
         } catch (NumberFormatException err) {
@@ -74,17 +76,18 @@ public class OrderDisplay extends JPanel implements ActionListener {
             display.pack();
             return;
         }
-        if (display.getOrderMap().containsKey(order_number)) {
-            warningMessage.setText("Order number already exists!");
-            display.pack();
-            return;
-        }
-        Order order = new Order(price, date, title, order_number, num_copies);
-        display.getOrderMap().put(order_number, order);
+
+        String sqlQuery = "INSERT INTO DELIVERY_ORDER (Tracking_number, Num_copies, Price, Date_of_arrival, Media_title, Media_type) VALUES("
+                        + order_number + ", " + num_copies + ", " + price + ", " + date + ", '"
+                        + title + "', 'Movie');";
+
+        Main.sqlQuery(Main.conn, sqlQuery);
+
         for (int i = 0; i < num_copies; i++) {
-            int uuid = (int) UUID.randomUUID().getLeastSignificantBits();
-            Copy copy = new Copy(uuid, order_number, title, Copy.CopyStatus.SHIPPING, Media.MediaType.MOVIE);
-            display.getCopyMap().put(uuid, copy);
+            int id = (int) UUID.randomUUID().getLeastSignificantBits() & 0x7FFFFFFF;
+            String copyQuery = "INSERT INTO COPY (Id_copy, Type, Status, Media_title, Tracking_num, Media_type) VALUES ("
+                                + id + ", 'Physical', 'Transit', '" + title + "', " + order_number + ", 'Movie');";
+            Main.sqlQuery(Main.conn, copyQuery);
         }
         display.changeView(new MainMenuDisplay(display));
     }
