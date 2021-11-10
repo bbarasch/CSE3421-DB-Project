@@ -41,8 +41,7 @@ public class EditDisplay extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(submit)) {
             String artistName = (String) artistEntry.getSelectedItem();
-            ContentCreator artist = display.getCreatorMap().get(artistName);
-            display.changeView(new ArtistAdd(display, artist));
+            display.changeView(new EditArtistDisplay(display, artistName));
         } else if (e.getSource().equals(back)) {
             display.changeView(new MainMenuDisplay(display));
         }

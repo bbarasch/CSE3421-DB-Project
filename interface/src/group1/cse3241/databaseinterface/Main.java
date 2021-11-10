@@ -33,6 +33,7 @@ public class Main {
         String url = "jdbc:sqlite:" + databaseFileName;
         Connection conn = null; // If you create this variable inside the Try block it will be out of scope
         try {
+        	
             conn = DriverManager.getConnection(url);
             if (conn != null) {
             	// Provides some positive assurance the connection and/or creation was successful.
@@ -84,6 +85,8 @@ public class Main {
         		tableModel.addRow(row);
     			System.out.print("\n");
         	}
+        	rs.close();
+        	stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -93,7 +96,7 @@ public class Main {
     public static void main(String[] args) {
     	System.out.println("Establishing connection...");
     	conn = initializeDB(DATABASE);
-    	
+    	sqlQuery(conn, "PRAGMA foreign_keys = ON;");
         new DatabaseDisplay();
     }
 }
