@@ -42,7 +42,7 @@ public class EditArtistDisplay extends JPanel implements ActionListener {
 			System.out.println(newName + " " + oldName);
 			String statSeq = "UPDATE CONTENT_CREATOR\r\n"
 					+ "SET Name = \"" + newName +"\"\r\n"
-					+ "WHERE person_id = (SELECT CONTENT_CREATOR.person_id FROM CONTENT_CREATOR WHERE CONTENT_CREATOR.Name = \""+ oldName +"\");";
+					+ "WHERE Name = \""+ oldName +"\";";
 			try {
 				Main.conn.createStatement().executeUpdate(statSeq);
 			} catch (SQLException e1) {
