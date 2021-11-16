@@ -1,0 +1,21 @@
+Tracking_Number,Num_Copies,Price,Date_Of_Arrival,Media_Title,Media_type
+100000,4,40.09,10/20/2021,Dune,Movie
+1000010,6,62.56,10/30/2021,The Greatest Showman,Movie
+1900020,3,31.24,10/20/2021,High School Musical,Movie
+2800030,20,220.45,10/28/2021,Hocus Pocus,Movie
+3700040,9,65.76,10/20/2021,Clayton's Friends,Movie
+4600050,8,43.65,10/20/2021,Dune,Audiobook
+5500060,3,13.56,10/30/2021,Dune Messiah,Audiobook
+6400070,6,20.35,10/20/2021,The Wish,Audiobook
+7300080,8,35.45,10/28/2021,The Return,Audiobook
+8200090,2,15.65,10/20/2021,The Rescue,Audiobook
+9100100,10,30.89,10/20/2021,Aristoltle and Dante Dive into the Waters of the World,Audiobook
+10000110,15,60.76,10/30/2021,Grit & Grace,Audiobook
+10900120,9,64.57,10/20/2021,Twilight (Unabridged),Audiobook
+11800130,9,67.89,10/28/2021,Sour,Album
+12700140,8,60.98,10/20/2021,Happier Than Ever,Album
+13600150,7,46.54,10/20/2021,"When We All Fall Asleep, Where Do We Go?",Album
+14500160,6,39.89,10/30/2021,Inside (The Songs),Album
+15400170,5,48.76,10/20/2021,In The Heights (Original Motion Picture Soundtrack),Album
+16300180,9,89.76,10/28/2021,Here On Earth,Album
+17200190,10,45.67,10/20/2021,Taylor Swift,Album

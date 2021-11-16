@@ -1,0 +1,18 @@
+/*1.  Find the number of copies and date of arrival of all orders for a single movie*/
+
+SELECT	DELIVERY_ORDER.Num_Copies, DELIVERY_ORDER.Date_of_Arrival
+FROM	DELIVERY_ORDER
+WHERE	DELIVERY_ORDER.Media_type = "Movie" AND DELIVERY_ORDER.Media_Title = "Dune";
+
+/*2.  Find all the available copies of audiobooks narrated by a single narrator */
+
+SELECT	COPY.Media_title, COPY.Id_copy
+FROM	COPY, AUDIO_BOOK
+WHERE	COPY.Media_title = AUDIO_BOOK.Title AND AUDIO_BOOK.Narrator = "Ilyana Kadushin" AND COPY.Status = "Available";
+
+/*3.  Find the total number of copies of each item checked in to the library. */
+
+SELECT	COPY.Media_Title, COPY.Media_type, count(*) as "Available copies"
+FROM	COPY
+WHERE	Status = "Available"
+GROUP BY COPY.Media_title, COPY.Media_type;

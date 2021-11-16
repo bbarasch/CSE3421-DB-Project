@@ -1,0 +1,71 @@
+/*4a*/
+SELECT PATRON.Fname, PATRON.Lname, SUM(MEDIA.Length)
+FROM PATRON, MEDIA, LIBRARY_CARD, COPY, CHECKED_OUT
+WHERE PATRON.Email = LIBRARY_CARD.Email AND LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id AND MEDIA.Media_type = "Movie" AND COPY.Media_title = MEDIA.Title AND CHECKED_OUT.Copy_Id = COPY.Id_copy
+GROUP BY PATRON.Email
+ORDER BY PATRON.Lname;
+
+/*4b*/
+SELECT PATRON.Fname, PATRON.Lname, PATRON.Email, COUNT(CHECKED_OUT.Card_Id)
+FROM PATRON, (LIBRARY_CARD JOIN CHECKED_OUT ON LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id JOIN COPY ON CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album")
+WHERE PATRON.Email = LIBRARY_CARD.Email
+GROUP BY PATRON.Email
+HAVING COUNT(CHECKED_OUT.Card_Id) > 
+    (SELECT AVG(c.cCount) FROM 
+        (SELECT COUNT(CHECKED_OUT.Card_Id) as cCount
+        FROM PATRON, (LIBRARY_CARD JOIN CHECKED_OUT ON LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id JOIN COPY ON CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album")
+        WHERE PATRON.Email = LIBRARY_CARD.Email
+        GROUP BY PATRON.Email) c);
+
+
+/*4c*/
+SELECT COPY.Media_title, COUNT(CHECKED_OUT.COPY_Id) as Lent
+FROM (COPY LEFT OUTER JOIN CHECKED_OUT ON CHECKED_OUT.Copy_Id = COPY.Id_copy)
+WHERE COPY.Media_type = "Movie"
+GROUP BY COPY.Media_title
+ORDER BY COUNT(CHECKED_OUT.COPY_Id) DESC;
+
+/*4d*/
+SELECT COPY.Media_title, COUNT(CHECKED_OUT.Card_Id) as "Checked Out"
+FROM COPY, CHECKED_OUT
+WHERE CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album" AND CHECKED_OUT.Returned_Date IS NULL
+GROUP BY COPY.Media_title
+ORDER BY COUNT(CHECKED_OUT.Card_Id) DESC;
+
+/*4e*/
+SELECT actors.Actor_name, MAX(max_movie_count)
+FROM STARRING, (SELECT STARRING.Actor_name, COUNT(CHECKED_OUT.COPY_Id) as max_movie_count
+     FROM STARRING, COPY, CHECKED_OUT
+     WHERE STARRING.Movie_title = COPY.Media_title AND COPY.Id_copy = CHECKED_OUT.Copy_Id
+     GROUP BY STARRING.Actor_name) as actors;
+
+/*4f*/
+SELECT creators.Creator_name, MAX(max_listening) as "Time (Minutes)"
+FROM (SELECT MEDIA.Creator_name, (COUNT(CHECKED_OUT.Copy_Id) * MEDIA.Length) as max_listening
+     FROM MEDIA, COPY, CHECKED_OUT
+     WHERE MEDIA.Title = COPY.Media_title AND COPY.Id_copy = CHECKED_OUT.Copy_Id AND MEDIA.Media_type = "Album"
+     GROUP BY MEDIA.Creator_name) as creators;
+
+/*4g*/
+SELECT PATRON.Lname, PATRON.Fname, PATRON.Email, COPY.Media_title as "Movie Title"
+FROM PATRON, LIBRARY_CARD, COPY, CHECKED_OUT, (SELECT title as movie_title, MAX(max_movie_count) as count
+            FROM (SELECT STARRING.Movie_title as title, COUNT(CHECKED_OUT.Copy_Id) as max_movie_count
+                FROM STARRING, COPY, CHECKED_OUT
+                WHERE STARRING.Movie_title = COPY.Media_title AND COPY.Id_copy = CHECKED_OUT.Copy_Id
+                GROUP BY STARRING.Actor_name)) as MAXM
+WHERE PATRON.Email = LIBRARY_CARD.Email AND LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id AND CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_title = MAXM.movie_title
+GROUP BY PATRON.Email
+ORDER BY PATRON.Lname;
+
+/*4h*/
+SELECT MEDIA.Creator_name
+FROM MEDIA, COPY, CHECKED_OUT, (SELECT LIBRARY_CARD.Id_card as cardId, COUNT(CHECKED_OUT.Card_Id) as album_count
+            FROM (LIBRARY_CARD LEFT OUTER JOIN (CHECKED_OUT JOIN COPY ON CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album") ON LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id)
+            GROUP BY LIBRARY_CARD.Id_card),
+            (SELECT AVG(album_count) as avg_count
+            FROM (SELECT COUNT(CHECKED_OUT.Card_Id) as album_count
+            FROM (LIBRARY_CARD LEFT OUTER JOIN (CHECKED_OUT JOIN COPY ON CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album") ON LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id)
+            GROUP BY LIBRARY_CARD.Id_card))
+WHERE cardId = CHECKED_OUT.Card_Id AND CHECKED_OUT.Copy_Id = COPY.Id_copy AND COPY.Media_type = "Album" AND COPY.Media_title = MEDIA.Title
+GROUP BY MEDIA.Creator_name
+HAVING album_count > avg_count;

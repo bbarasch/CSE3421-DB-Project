@@ -1,0 +1,110 @@
+create table CONTENT_CREATOR
+(Name varchar(30) not null,
+primary key(Name)
+);
+CREATE TABLE CREATOR_TYPE
+(Type varchar(15) not null,
+Creator_name varchar(30) not null,
+primary key(Type,Creator_name),
+foreign key(Creator_name) references CONTENT_CREATOR(Name) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE MEDIA
+(Title varchar(30) not null,
+Year int not null,
+Length double not null,
+Media_type varchar(15) not null,
+Creator_name varchar(30) not null,
+primary key(Title, Media_type),
+foreign key(Creator_name) references CONTENT_CREATOR(Name) ON DELETE SET NULL ON UPDATE CASCADE
+);
+CREATE TABLE MOVIE
+(Title varchar(30) not null,
+Movie_genre varchar(15) not null,
+Content_rating varchar(15),
+Definition varchar(15) not null,
+Media_type varchar(15) not null,
+primary key(Title)
+foreign key(Title, Media_type) references MEDIA(Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE ALBUM
+(Title varchar(30) not null,
+Music_genre varchar(15) not null,
+Record_label varchar(15) not null,
+Media_type varchar(15) not null,
+primary key(Title),
+foreign key(Title, Media_type) references MEDIA(Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE AUDIO_BOOK
+(Title varchar(30) not null,
+Book_genre varchar(15) not null,
+Publisher varchar(15) not null,
+Narrator varchar(30) not null,
+Media_type varchar(15) not null,
+primary key(Title),
+foreign key(Title, Media_type) references MEDIA(Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key(Narrator) references CONTENT_CREATOR(Name) ON DELETE SET NULL ON UPDATE CASCADE
+);
+CREATE TABLE STARRING
+(Movie_title varchar(30) not null,
+Actor_name varchar(30) not null,
+primary key(Movie_title,Actor_name),
+foreign key(Actor_name) references CONTENT_CREATOR(Name) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key(Movie_title) references MOVIE(Title) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE CHAPTER
+(Title varchar(30) not null,
+Length double not null,
+Audiobook_title varchar(30) not null,
+primary key(Title, Audiobook_title),
+foreign key(Audiobook_title) references AUDIO_BOOK(Title) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE TRACK
+(Title varchar(30) not null,
+Length double not null,
+Album_title varchar(30) not null,
+primary key(Title, Album_title),
+foreign key(Album_title) references ALBUM(Title) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE PATRON
+(Email varchar(45) not null,
+Address varchar(45) not null,
+Fname varchar(15) not null,
+Lname varchar(15) not null,
+primary key(Email)
+);
+CREATE TABLE LIBRARY_CARD
+(Id_card int not null,
+Email varchar(45) not null,
+primary key(Id_card),
+foreign key(Email) references PATRON(Email) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE DELIVERY_ORDER
+(Tracking_number long not null,
+Num_copies int not null,
+Price double not null,
+Date_of_arrival date not null,
+Media_title varchar(15) not null,
+Media_type varchar(15) not null,
+primary key(Tracking_number),
+foreign key(Media_title, Media_type) references MEDIA(Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE COPY 
+(Id_copy int NOT NULL,
+ Type varchar (10) NOT NULL, 
+ Status varchar (10) NOT NULL, 
+ Media_title varchar (15) NOT NULL, 
+ Tracking_num long, 
+ Media_type varchar (15) NOT NULL, 
+ PRIMARY KEY (Id_copy), 
+ FOREIGN KEY (Tracking_num) REFERENCES DELIVERY_ORDER (Tracking_number) ON DELETE CASCADE ON UPDATE CASCADE, 
+ FOREIGN KEY (Media_title, Media_type) REFERENCES MEDIA (Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+ CREATE TABLE CHECKED_OUT 
+(Checked_Number INT PRIMARY KEY NOT NULL UNIQUE,
+ Copy_Id INT NOT NULL, 
+ Card_Id INT NOT NULL, 
+ Due_Date DATE NOT NULL, 
+ Checked_Date DATE NOT NULL, 
+ Returned_Date DATE,
+ foreign key(Copy_Id) references COPY(Id_copy) ON DELETE CASCADE ON UPDATE CASCADE,
+ foreign key(Card_Id) references LIBRARY_CARD(Id_card) ON DELETE CASCADE ON UPDATE CASCADE);

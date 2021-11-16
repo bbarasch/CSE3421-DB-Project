@@ -1,0 +1,15 @@
+/* View #1:
+/ Get the counts of items that are overdue for patrons */
+CREATE VIEW OverdueCounts AS
+SELECT P.Fname, P.Lname, COUNT(Q.Due_date) as Overdue
+FROM CHECKED_OUT as Q, LIBRARY_CARD as L, PATRON as P 
+WHERE P.Email = L.Email AND L.Id_card = Q.Card_id AND Q.Due_date < CURRENT_DATE
+GROUP BY L.Email;
+
+/*# View #2:
+/ List the average length of a track by recording artist */
+CREATE VIEW ArtistAverage AS
+SELECT M.Creator_name, AVG(T.Length) as TrackAverage
+FROM MEDIA as M, ALBUM as A, TRACK as T
+WHERE M.Title = A.Title AND M.Title = T.Album_title
+GROUP BY M.Creator_name;

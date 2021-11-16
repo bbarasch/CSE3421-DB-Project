@@ -1,0 +1,50 @@
+--4.3a
+SELECT Title
+FROM TRACK
+WHERE Album_Title IN
+(SELECT Title
+ FROM MEDIA
+ WHERE MEDIA.Creator_name = 'Billie Eilish' AND
+      MEDIA.Year < '2020' AND MEDIA.Media_type = 'Album');
+
+--4.3b
+SELECT Media_Title, Checked_Date
+FROM COPY, CHECKED_OUT
+WHERE COPY.Media_type = 'Movie' AND
+     CHECKED_OUT.Card_Id = '100' AND
+     COPY.Id_copy = CHECKED_OUT.Copy_Id;
+
+--4.3c
+SELECT Media_title
+FROM COPY
+WHERE COPY.Media_type = 'Album'
+GROUP BY COPY.Media_title
+HAVING COUNT(Media_Title) < 2;
+
+--4.3d
+SELECT PATRON.Fname, PATRON.Lname, PATRON.Email, STARRING.Movie_title
+FROM PATRON, STARRING, LIBRARY_CARD, CHECKED_OUT, COPY
+WHERE PATRON.Email = LIBRARY_CARD.Email AND 
+    STARRING.Actor_name = "Zendaya" AND 
+    LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id AND 
+    CHECKED_OUT.Copy_Id = COPY.Id_copy AND 
+    STARRING.Movie_title = COPY.Media_title;
+
+--4.3e
+SELECT count(*) as 'Album Count'
+FROM CHECKED_OUT, COPY
+WHERE CHECKED_OUT.Copy_Id = COPY.Id_copy AND
+    COPY.Media_type = 'Album' AND
+    CHECKED_OUT.Card_Id = '101';
+
+--4.3f
+SELECT PATRON.Fname, PATRON.Lname, PATRON.Email, COUNT(*) AS MoviesChecked
+FROM PATRON, LIBRARY_CARD, CHECKED_OUT, COPY
+WHERE PATRON.Email = LIBRARY_CARD.Email AND 
+    LIBRARY_CARD.Id_card = CHECKED_OUT.Card_Id AND
+    CHECKED_OUT.Copy_Id = COPY.Id_copy AND
+    COPY.Media_type = 'Movie'
+GROUP BY PATRON.Email
+ORDER BY MoviesChecked DESC
+LIMIT 1;
+
