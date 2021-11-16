@@ -1,0 +1,8 @@
+--1
+CREATE INDEX idx_media_title ON MEDIA (Title);
+
+--2
+CREATE INDEX idx_checked_out_card_id ON CHECKED_OUT (Card_Id);
+
+--3
+CREATE INDEX idx_checked_out_copy_id ON CHECKED_OUT (Copy_Id);
