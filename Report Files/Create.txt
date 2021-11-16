@@ -38,7 +38,7 @@ CREATE TABLE AUDIO_BOOK
 (Title varchar(30) not null,
 Book_genre varchar(15) not null,
 Publisher varchar(15) not null,
-Narrator varchar(30) not null,
+Narrator varchar(30),
 Media_type varchar(15) not null,
 primary key(Title),
 foreign key(Title, Media_type) references MEDIA(Title, Media_type) ON DELETE CASCADE ON UPDATE CASCADE,
