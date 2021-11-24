@@ -1,0 +1,57 @@
+/* Transaction 1: Return_Items */
+/* Description:  Returns all copies of any item checked out by a particular patron. */
+BEGIN TRANSACTION RETURN_ITEMS
+	UPDATE COPY 
+SET Status = “Available”
+	WHERE IdNum IN
+		(SELECT C.IdNum
+		 FROM COPY as C, CHECKED_OUT as O, LIBRARY_CARD as L
+		 WHERE L.Email = “john.smith@gmail.com” AND
+			L.IdCard = O.IdCard AND O.IdNum = C.IdNum);
+	IF error THEN GO TO UNDO; END IF;
+	UPDATE CHECKED_OUT
+	SET Returned_Date = 2021-11-23
+	WHERE IdCard IN
+		(SELECT C.IdCard
+		 FROM LIBRARY_CARD as L, CHECKED_OUT as C
+		 WHERE L.Email = “john.smith@gmail.com” AND
+		 L.IdCard = C.IdCard);
+	IF error THEN GO TO UNDO; END IF;
+	COMMIT;
+	GO TO FINISH;	
+	UNDO:
+		ROLLBACK;
+	FINISH:
+END TRANSACTION;
+
+/* Transaction 2: New_Card */
+/* Description: Gives a patron a new library card, and deletes the old one. */
+
+BEGIN TRANSACTION NEW_CARD
+	DELETE FROM LIBRARY_CARD
+	WHERE Email = “john.smith@gmail.com”;
+	IF error GO TO UNDO; END IF;
+	INSERT INTO LIBRARY_CARD
+	VALUES (12345678, “john.smith@gmail.com”);
+	IF error GO TO UNDO; END IF;
+	COMMIT;
+	GO TO FINISH;
+	UNDO:
+		ROLLBACK;
+	FINISH:
+END TRANSACTION;
+
+/* Transaction 3: Change_Price */
+/* Description: Changes the price per copy of all orders due on Thanksgiving because of a holiday fee */
+BEGIN TRANSACTION CHANGE_PRICE
+	UPDATE ORDER
+	SET Price = Price + 2 * Num_Copies
+	WHERE Date_of_Arrival = 2021-11-25;
+	IF error GO TO UNDO; END IF;
+	COMMIT;
+	GO TO FINISH;
+	UNDO:
+		ROLLBACK;
+	FINISH;
+END TRANSACTION;
+
