@@ -1,0 +1,44 @@
+/* Transaction 1: Return_Items */
+/* Description:  Sets status of all checked out copies by a particular patron to 'Available' (Return copy to library). */
+BEGIN TRANSACTION;
+
+    UPDATE COPY
+    SET Status = "Available"
+    WHERE Id_copy IN
+        (SELECT C.Id_copy
+        FROM COPY as C, CHECKED_OUT as O, LIBRARY_CARD as L
+        WHERE L.Email = "johndoe2@gmail.com" AND L.Id_card = O.Card_Id AND O.Copy_Id = C.Id_copy);
+
+    UPDATE CHECKED_OUT
+    SET Returned_Date = "11/29/2021"
+    WHERE Copy_Id IN
+        (SELECT O.Copy_Id
+        FROM COPY as C, CHECKED_OUT as O, LIBRARY_CARD as L
+        WHERE L.Email = "johndoe2@gmail.com" AND L.Id_card = O.Card_Id AND O.Copy_Id = C.Id_copy);
+
+COMMIT;
+
+/* Transaction 2: New_Card */
+/* Description: Gives a patron a new library card, and deletes the old one. */
+
+BEGIN TRANSACTION;
+
+    DELETE FROM LIBRARY_CARD
+    WHERE Email = "john.smith@gmail.com";
+    
+    INSERT INTO LIBRARY_CARD
+    VALUES(201, "john.smith@gmail.com");
+
+COMMIT;
+
+/* Transaction 3: Change_Price */
+/* Description: Changes the price per copy of all orders due on Thanksgiving because of a holiday fee */
+
+BEGIN TRANSACTION;
+
+    UPDATE DELIVERY_ORDER
+    SET Price = Price + 2 * Num_Copies
+    WHERE Date_of_Arrival = "10/30/2021";
+
+COMMIT;
+

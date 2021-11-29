@@ -1,0 +1,17 @@
+/*Delete track*/
+DELETE FROM TRACK WHERE Title = "TrackTitle" AND Album_title = "AlbumTitle";
+
+/*Delete album*/
+DELETE FROM MEDIA WHERE Title = "AlbumTitle" AND Media_type = "Album";
+
+/*Delete movie*/
+DELETE FROM MEDIA WHERE Title = "MovieTitle" AND Media_type = "Movie";
+
+/*Delete audiobook*/
+DELETE FROM MEDIA WHERE Title = "BookTitle" AND Media_type = "Audiobook";
+
+/*Delete content creator*/
+DELETE FROM CONTENT_CREATOR WHERE Name = "CreatorName";
+
+/*Delete patron*/
+DELETE FROM PATRON WHERE Email = "PatronEmail";

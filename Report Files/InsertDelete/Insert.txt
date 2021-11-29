@@ -1,0 +1,54 @@
+/*Insert a new track
+Assumptions: the album is already in the system.
+*/
+
+INSERT INTO TRACK
+VALUES (‘Yellow’, 266, ‘Parachutes’);
+
+/*Insert a new album
+Assumption: Band is already added to content_creator*/
+INSERT INTO MEDIA
+VALUES ('A Head Full of Dreams', 2015, 45, 'Album', 'Coldplay');
+
+INSERT INTO ALBUM
+VALUES ('A Head Full of Dreams', 'Alternative', 'Parlophone', 'Album'); 
+
+/*Insert a new movie
+Adding actors to starring is not mandatory.
+Assumption: Director and actors are already added to content_creator.*/
+INSERT INTO MEDIA
+VALUES ('The Hunger Games: Mockingjay Part 2', 2015, 137, 'Movie', 'Francis Lawrence');
+
+INSERT INTO MOVIE
+VALUES ('The Hunger Games: Mockingjay Part 2', 'Sci-Fi', 'PG-13', 'Blu-Ray', 'Movie');
+
+INSERT INTO STARRING
+VALUES ('The Hunger Games: Mockingjay Part 2', 'Jennifer Lawrence');
+
+INSERT INTO STARRING
+VALUES ('The Hunger Games: Mockingjay Part 2', 'Josh Hutcherson');
+
+INSERT INTO STARRING
+VALUES ('The Hunger Games: Mockingjay Part 2', 'Liam Hemsworth');
+
+/*Insert a new Audiobook
+Assumption: author and narrator are already added to content_creator.*/
+INSERT INTO MEDIA
+VALUES ('Children of Dune', 1976, 1011, 'Audiobook', 'Frank Herbert');
+
+INSERT INTO AUDIO_BOOK
+VALUES ('Children of Dune', 'Sci-Fi', 'Macmillan Audio', 'Scott Brick', 'Audiobook');
+
+/*Insert a new content creator*/
+INSERT INTO CONTENT_CREATOR
+VALUES ('Katy Perry');
+
+INSERT INTO CREATOR_TYPE
+VALUES ('Musician', 'Katy Perry');
+
+/*Insert a new patron/customer*/
+INSERT INTO PATRON
+VALUES ('john.smith@gmail.com', '101 N High Street', 'John', 'Smith');
+
+INSERT INTO LIBRARY_CARD
+VALUES (200, 'john.smith@gmail.com');
